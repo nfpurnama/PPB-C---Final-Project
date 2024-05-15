@@ -1,0 +1,1 @@
+{0: 'Bali', 1: 'Betawi', 2: 'Celup', 3: 'Cendrawasih', 4: 'Ceplok', 5: 'Ciamis', 6: 'Garutan', 7: 'Gentongan', 8: 'Kawung', 9: 'Keraton', 10: 'Lasem', 11: 'Megamendung', 12: 'Parang', 13: 'Pekalongan', 14: 'Priangan', 15: 'Sekar', 16: 'Sidoluhur', 17: 'Sidomukti', 18: 'Sogan', 19: 'Tambal'}
