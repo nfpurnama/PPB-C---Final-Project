@@ -32,13 +32,13 @@
 
     <fragment
         android:id="@+id/cameraFragment"
-        android:name="com.example.finalproject.ui.scan.camera.CameraFragment"
+        android:name="com.example.finalproject.ui.scan.CameraFragment"
         android:label="Camera"
         tools:layout="@layout/fragment_camera" />
 
     <fragment
         android:id="@+id/uploadFragment"
-        android:name="com.example.finalproject.ui.scan.upload.UploadFragment"
+        android:name="com.example.finalproject.ui.scan.UploadFragment"
         android:label="Upload Image"
         tools:layout="@layout/fragment_upload" />
 
