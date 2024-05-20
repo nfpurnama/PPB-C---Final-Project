@@ -4,28 +4,28 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
+import androidx.navigation.Navigation;
+import com.example.finalproject.R;
 import com.example.finalproject.databinding.FragmentScanBinding;
 
 public class ScanFragment extends Fragment {
-
     private FragmentScanBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ScanViewModel scanViewModel =
-                new ViewModelProvider(this).get(ScanViewModel.class);
-
         binding = FragmentScanBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textScan;
-        scanViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        binding.openCameraButton.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_scanFragment_to_cameraFragment);
+        });
+
+        binding.uploadImageButton.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_scanFragment_to_uploadFragment);
+        });
+
         return root;
     }
 

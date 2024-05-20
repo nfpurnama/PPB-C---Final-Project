@@ -15,11 +15,31 @@
         android:id="@+id/navigation_scan"
         android:name="com.example.finalproject.ui.scan.ScanFragment"
         android:label="@string/title_scan"
-        tools:layout="@layout/fragment_scan" />
+        tools:layout="@layout/fragment_scan">
+        <action
+            android:id="@+id/action_scanFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_scanFragment_to_uploadFragment"
+            app:destination="@id/uploadFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_bookmark"
         android:name="com.example.finalproject.ui.bookmark.BookmarkFragment"
         android:label="@string/title_bookmark"
         tools:layout="@layout/fragment_bookmark" />
+
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.example.finalproject.ui.scan.camera.CameraFragment"
+        android:label="Camera"
+        tools:layout="@layout/fragment_camera" />
+
+    <fragment
+        android:id="@+id/uploadFragment"
+        android:name="com.example.finalproject.ui.scan.upload.UploadFragment"
+        android:label="Upload Image"
+        tools:layout="@layout/fragment_upload" />
+
 </navigation>
