@@ -53,7 +53,7 @@ public class UploadFragment extends Fragment {
         if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
             Uri imageUri = result.getData().getData();
             previewImageView.setImageURI(imageUri);
-            // Lakukan klasifikasi gambar di sini
+            // klasifikasi gambar di sini
         } else {
             Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show();
         }

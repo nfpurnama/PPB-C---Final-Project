@@ -52,7 +52,7 @@ public class CameraFragment extends Fragment {
             Bundle extras = result.getData().getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             previewImageView.setImageBitmap(imageBitmap);
-            // Lakukan klasifikasi gambar di sini
+            // klasifikasi gambar di sini
         } else {
             Toast.makeText(requireContext(), "Failed to capture image", Toast.LENGTH_SHORT).show();
         }
