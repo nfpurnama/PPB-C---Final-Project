@@ -1,4 +1,4 @@
-package com.example.finalproject.ui.scan;
+package com.example.finalproject.ui.scan.upload;
 
 import android.app.Activity;
 import android.content.Intent;
