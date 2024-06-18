@@ -1,6 +1,11 @@
 <resources>
-    <string name="app_name">Final Project</string>
-    <string name="title_home">Home</string>
-    <string name="title_scan">Scan</string>
-    <string name="title_bookmark">Bookmark</string>
+    <string name="app_name">Hijaiyah Application</string>
+    <string name="draw">Draw</string>
+    <string name="drawing_area">Drawing area</string>
+    <string name="erase">Erase</string>
+    <string name="recognition">Recognition</string>
+    <string name="settings_cd">Settings button</string>
+    <string name="unknown_letter">Prediksi: ?</string>
+    <string name="unknown_character">Unknown Character</string>
+    <string name="upload_img">Upload Image</string>
 </resources>
