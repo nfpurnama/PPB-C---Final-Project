@@ -1,9 +1,10 @@
 package com.example.finalproject;
 
 import android.content.Context;
-import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.util.Log;
+import android.content.res.AssetFileDescriptor;
 
 import org.tensorflow.lite.Interpreter;
 
@@ -19,16 +20,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HijaiyahRecognizer {
+    private static final String TAG = "HijaiyahRecognizer";
+    private static final String MODEL_FILE_NAME = "model.tflite";
+    private static final String LABEL_FILE_NAME = "class_names.txt";
+
     private static Interpreter interpreter;
     private static List<String> labels;
 
     public static void init(Context context) {
         try {
-            MappedByteBuffer tfliteModel = loadModelFile(context, "model.tflite");
+            MappedByteBuffer tfliteModel = loadModelFile(context, MODEL_FILE_NAME);
             interpreter = new Interpreter(tfliteModel);
-            labels = getHijaiyahLabels(context, "class_names.txt");
+            labels = getLabels(context, LABEL_FILE_NAME);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error initializing TensorFlow Lite Interpreter: " + e.getMessage());
         }
     }
 
@@ -41,9 +46,9 @@ public class HijaiyahRecognizer {
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
     }
 
-    private static List<String> getHijaiyahLabels(Context context, String txtFileName) throws IOException {
+    private static List<String> getLabels(Context context, String labelPath) throws IOException {
         List<String> labels = new ArrayList<>();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(context.getAssets().open(txtFileName)));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(context.getAssets().open(labelPath)));
         String line;
         while ((line = reader.readLine()) != null) {
             labels.add(line);
@@ -53,10 +58,14 @@ public class HijaiyahRecognizer {
     }
 
     public static String predictHijaiyah(Bitmap bitmap) {
+        if (interpreter == null || labels == null) {
+            Log.e(TAG, "TensorFlow Lite Interpreter or Labels not initialized");
+            return "Error";
+        }
+
         Bitmap preprocessedBitmap = preprocessImage(bitmap);
         ByteBuffer inputBuffer = convertBitmapToByteBuffer(preprocessedBitmap);
         float[][] output = new float[1][labels.size()];
-
         interpreter.run(inputBuffer, output);
 
         int maxIndex = -1;
@@ -92,17 +101,22 @@ public class HijaiyahRecognizer {
         return grayBitmap;
     }
 
+
     private static ByteBuffer convertBitmapToByteBuffer(Bitmap bitmap) {
-        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4 * 32 * 32 * 1);
+        // Mengubah ukuran Bitmap menjadi 32x32
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 32, 32, true);
+
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4 * 32 * 32 * 3);
         byteBuffer.order(ByteOrder.nativeOrder());
         int[] intValues = new int[32 * 32];
-
-        bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+        resizedBitmap.getPixels(intValues, 0, 32, 0, 0, 32, 32);
         int pixel = 0;
-        for (int i = 0; i < 32; ++i) {
-            for (int j = 0; j < 32; ++j) {
-                final int val = intValues[pixel++];
-                byteBuffer.putFloat((val & 0xFF) / 255.0f);
+        for (int i = 0; i < 32; i++) {
+            for (int j = 0; j < 32; j++) {
+                int value = intValues[pixel++];
+                byteBuffer.putFloat((value >> 16 & 0xFF) / 255.0f);
+                byteBuffer.putFloat((value >> 8 & 0xFF) / 255.0f);
+                byteBuffer.putFloat((value & 0xFF) / 255.0f);
             }
         }
         return byteBuffer;
